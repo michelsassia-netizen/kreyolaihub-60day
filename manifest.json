@@ -1,0 +1,9 @@
+{
+  "name": "KreyòlAIHub — 60-Day Mastery",
+  "short_name": "KreyòlAIHub",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#F7FAFF",
+  "theme_color": "#F7FAFF",
+  "icons": []
+}

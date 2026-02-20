@@ -1,0 +1,1836 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#F7FAFF" />
+  <link rel="manifest" href="manifest.json">
+  <title>KreyòlAIHub — 60-Day Automation Mastery (Solo)</title>
+
+  <style>
+    :root{
+      --bg:#F7FAFF;
+      --panel:#FFFFFF;
+      --panel2:#F3F7FF;
+      --text:#0B1220;
+      --muted:#546681;
+      --line:rgba(15,23,42,.12);
+
+      --accent:#2D6BFF;     /* friendly blue */
+      --accent2:#FF7A18;    /* warm orange */
+      --accent3:#2BCB9A;    /* mint */
+      --accent4:#B06BFF;    /* lavender */
+
+      --ok:#16A34A;
+      --warn:#F59E0B;
+      --bad:#EF4444;
+
+      --shadow: 0 12px 28px rgba(15,23,42,.08);
+      --radius: 18px;
+    }
+    body.cyber{
+      --bg:#070A12;
+      --panel:#0D1222;
+      --panel2:#101A30;
+      --text:#EAF0FF;
+      --muted:#A7B2D6;
+      --line:rgba(255,255,255,.10);
+
+      --accent:#39D2FF;
+      --accent2:#FF2D55;
+      --accent3:#44D17C;
+      --accent4:#9B7CFF;
+
+      --ok:#44D17C;
+      --warn:#FFC24B;
+      --bad:#FF6B6B;
+
+      --shadow: 0 16px 40px rgba(0,0,0,.35);
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background:
+        radial-gradient(1100px 650px at 10% 0%, rgba(45,107,255,.16), transparent 56%),
+        radial-gradient(950px 580px at 90% 10%, rgba(255,122,24,.14), transparent 56%),
+        radial-gradient(900px 500px at 50% 110%, rgba(43,203,154,.10), transparent 55%),
+        var(--bg);
+      color: var(--text);
+      transition: background .25s ease, color .25s ease;
+    }
+    body.cyber{
+      background:
+        radial-gradient(1100px 650px at 15% 0%, rgba(57,210,255,.14), transparent 56%),
+        radial-gradient(950px 580px at 90% 10%, rgba(255,45,85,.12), transparent 56%),
+        radial-gradient(900px 500px at 50% 110%, rgba(68,209,124,.10), transparent 55%),
+        var(--bg);
+    }
+
+    .wrap{
+      display:grid;
+      grid-template-columns: 360px 1fr;
+      min-height:100vh;
+    }
+    @media (max-width: 980px){
+      .wrap{ grid-template-columns: 1fr; }
+      .sidebar{ position:sticky; top:0; z-index:9; height:auto; }
+      .main{ padding-top:10px; }
+    }
+
+    .sidebar{
+      border-right:1px solid var(--line);
+      background: linear-gradient(180deg, rgba(255,255,255,.55), rgba(255,255,255,.22));
+      backdrop-filter: blur(10px);
+      padding:16px;
+      height:100vh;
+      overflow:auto;
+    }
+    body.cyber .sidebar{
+      background: linear-gradient(180deg, rgba(13,18,34,.92), rgba(7,10,18,.92));
+      backdrop-filter: blur(10px);
+    }
+
+    .brand{
+      display:flex; gap:10px; align-items:center;
+      margin-bottom:12px;
+    }
+    .logo{
+      width:40px; height:40px; border-radius:14px;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(45,107,255,.70), rgba(45,107,255,.18)),
+        radial-gradient(circle at 70% 70%, rgba(255,122,24,.55), rgba(255,122,24,.10));
+      border:1px solid rgba(255,255,255,.20);
+      box-shadow: var(--shadow);
+    }
+    body.cyber .logo{
+      background:
+        radial-gradient(circle at 30% 30%, rgba(57,210,255,.70), rgba(57,210,255,.18)),
+        radial-gradient(circle at 70% 70%, rgba(255,45,85,.55), rgba(255,45,85,.10));
+    }
+    .brand h1{ font-size:14px; margin:0; }
+    .brand p{ font-size:12px; margin:2px 0 0; color:var(--muted); }
+
+    .card{
+      background: var(--panel);
+      border:1px solid var(--line);
+      border-radius: var(--radius);
+      padding:14px;
+      box-shadow: var(--shadow);
+      margin:12px 0;
+    }
+    .row{ display:flex; gap:10px; align-items:center; flex-wrap:wrap; }
+    .pill{
+      font-size:12px; color:var(--muted);
+      border:1px solid var(--line);
+      padding:6px 10px; border-radius:999px;
+      background: rgba(255,255,255,.45);
+    }
+    body.cyber .pill{ background: rgba(255,255,255,.04); }
+    .pill strong{ color: var(--text); }
+
+    .progress{
+      margin-top:10px;
+      height:10px;
+      border-radius:999px;
+      overflow:hidden;
+      border:1px solid var(--line);
+      background: rgba(15,23,42,.06);
+    }
+    body.cyber .progress{ background: rgba(255,255,255,.08); }
+    .progress > div{
+      height:100%;
+      width:0%;
+      background: linear-gradient(90deg, var(--accent), var(--accent2), var(--accent3));
+      transition: width .25s ease;
+    }
+
+    button{
+      border:1px solid var(--line);
+      color:var(--text);
+      background: rgba(45,107,255,.10);
+      border-radius:14px;
+      padding:10px 12px;
+      font-weight:800;
+      cursor:pointer;
+      transition: transform .05s ease, background .15s ease, border .15s ease;
+    }
+    button:hover{ background: rgba(45,107,255,.16); border-color: rgba(45,107,255,.25); }
+    button:active{ transform: translateY(1px); }
+    body.cyber button{ background: rgba(57,210,255,.10); }
+    body.cyber button:hover{ background: rgba(57,210,255,.16); border-color: rgba(57,210,255,.24); }
+
+    .btnPrimary{
+      border:none;
+      color:white;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+    }
+    .btnOk{
+      background: rgba(22,163,74,.10);
+      border-color: rgba(22,163,74,.22);
+    }
+    .btnDanger{
+      background: rgba(239,68,68,.10);
+      border-color: rgba(239,68,68,.22);
+    }
+    .btnGhost{
+      background: rgba(255,255,255,.35);
+    }
+    body.cyber .btnGhost{ background: rgba(255,255,255,.04); }
+
+    input, select, textarea{
+      width:100%;
+      background: rgba(255,255,255,.55);
+      border:1px solid var(--line);
+      border-radius:14px;
+      padding:10px 12px;
+      color:var(--text);
+      outline:none;
+    }
+    body.cyber input, body.cyber select, body.cyber textarea{ background: rgba(255,255,255,.04); }
+    textarea{ min-height:130px; resize:vertical; }
+    .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace; }
+
+    .searchRow{ display:flex; gap:10px; align-items:center; }
+    .searchRow input{ flex:1; }
+
+    .list{ display:grid; gap:8px; margin-top:12px; }
+    .item{
+      display:flex; align-items:center; justify-content:space-between;
+      gap:10px;
+      padding:10px 12px;
+      border:1px solid var(--line);
+      border-radius:16px;
+      background: rgba(255,255,255,.55);
+      cursor:pointer;
+    }
+    body.cyber .item{ background: rgba(255,255,255,.03); }
+    .item:hover{ background: rgba(255,255,255,.75); }
+    body.cyber .item:hover{ background: rgba(255,255,255,.06); }
+    .item.locked{ opacity:.55; cursor:not-allowed; }
+    .meta{ display:flex; flex-direction:column; gap:2px; min-width:0; }
+    .meta b{ font-size:13px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .meta span{ font-size:12px; color:var(--muted); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+
+    .badge{
+      font-size:11px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.55);
+      color: var(--muted);
+      flex:0 0 auto;
+    }
+    body.cyber .badge{ background: rgba(255,255,255,.04); }
+    .badge.ok{ border-color: rgba(22,163,74,.22); color: var(--ok); background: rgba(22,163,74,.10); }
+    .badge.warn{ border-color: rgba(245,158,11,.22); color: var(--warn); background: rgba(245,158,11,.10); }
+    .badge.bad{ border-color: rgba(239,68,68,.22); color: var(--bad); background: rgba(239,68,68,.10); }
+    .badge.lvl{ border-color: rgba(45,107,255,.22); color: var(--accent); background: rgba(45,107,255,.10); }
+
+    .main{ padding:18px; overflow:auto; }
+    .hero{ display:flex; align-items:flex-start; justify-content:space-between; gap:12px; flex-wrap:wrap; margin-bottom:12px; }
+    .hero h2{ margin:0; font-size:22px; }
+    .hero p{ margin:8px 0 0; color:var(--muted); max-width:900px; }
+
+    .grid{
+      display:grid;
+      grid-template-columns: 1.2fr .9fr;
+      gap:12px;
+      align-items:start;
+    }
+    @media (max-width: 980px){ .grid{ grid-template-columns: 1fr; } }
+
+    .sectionTitle{ margin:0 0 10px; font-size:14px; letter-spacing:.02em; }
+    .k{
+      display:inline-block;
+      font-size:12px;
+      padding:3px 8px;
+      border-radius:999px;
+      border:1px solid rgba(45,107,255,.22);
+      background: rgba(45,107,255,.10);
+      color: var(--accent);
+      margin-right:6px;
+    }
+    body.cyber .k{
+      border:1px solid rgba(57,210,255,.22);
+      background: rgba(57,210,255,.10);
+      color: var(--accent);
+    }
+
+    .divider{ height:1px; background: var(--line); margin:12px 0; }
+    .small{ font-size:12px; color: var(--muted); }
+
+    .checkRow{ display:flex; gap:10px; align-items:center; margin:10px 0; }
+    .checkRow input[type="checkbox"]{ width:18px; height:18px; }
+
+    .score{
+      font-weight:950;
+      font-size:26px;
+      letter-spacing:.4px;
+    }
+
+    .tabs{ display:flex; gap:8px; flex-wrap:wrap; }
+    .tab{
+      padding:8px 10px;
+      border-radius:14px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.45);
+      cursor:pointer;
+      font-weight:800;
+      font-size:12px;
+    }
+    body.cyber .tab{ background: rgba(255,255,255,.04); }
+    .tab.active{
+      border-color: rgba(45,107,255,.28);
+      background: rgba(45,107,255,.12);
+      color: var(--text);
+    }
+    body.cyber .tab.active{
+      border-color: rgba(57,210,255,.28);
+      background: rgba(57,210,255,.12);
+    }
+
+    .toast{
+      position:fixed;
+      bottom:16px; right:16px;
+      max-width: 520px;
+      padding:12px 14px;
+      border-radius:16px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.85);
+      box-shadow: var(--shadow);
+      display:none;
+      z-index:99;
+      color: var(--text);
+    }
+    body.cyber .toast{ background: rgba(16,26,48,.92); }
+    .toast.show{ display:block; }
+  </style>
+</head>
+
+<body>
+<div class="wrap">
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="logo" aria-hidden="true"></div>
+      <div>
+        <h1>KreyòlAIHub — 60-Day Mastery</h1>
+        <p>Strict Solo Mode • 6 days/week • 80% pass gate</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="row">
+        <span class="pill">Week: <strong id="pillWeek">1</strong></span>
+        <span class="pill">Day: <strong id="pillDay">1</strong>/60</span>
+        <span class="pill">Unlocked: <strong id="pillUnlocked">1</strong>/60</span>
+      </div>
+      <div class="progress"><div id="bar"></div></div>
+      <div class="small" id="gateNote" style="margin-top:8px;"></div>
+      <div class="row" style="margin-top:10px;">
+        <button class="btnPrimary" id="btnGoGate">Go to current gate</button>
+        <button class="btnGhost" id="btnTheme">☀️/🌙 Theme</button>
+        <button id="btnExport">Export</button>
+        <button class="btnDanger" id="btnReset">Reset</button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="row" style="margin-bottom:8px;">
+        <input id="yourName" placeholder="Your name (certificates)" />
+        <button id="btnSaveName">Save</button>
+      </div>
+      <div class="row">
+        <span class="pill">Pass rule: <strong>≥ 80%</strong></span>
+        <span class="pill">Model: <strong>Copy prompt → paste JSON</strong></span>
+      </div>
+      <div class="row" style="margin-top:10px;">
+        <button class="btnOk" id="btnCert">Certificate</button>
+        <button id="btnInstallHelp">iPhone install</button>
+      </div>
+      <div class="small" style="margin-top:8px;">
+        Offline works after first load. Progress saved locally on this device.
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="searchRow">
+        <input id="search" placeholder="Search (Notion, Zapier, Make, API, Agents…)" />
+        <select id="filter">
+          <option value="all">All</option>
+          <option value="AI+Prompting">AI+Prompting</option>
+          <option value="Notion">Notion</option>
+          <option value="Zapier">Zapier</option>
+          <option value="Make">Make</option>
+          <option value="API">API</option>
+          <option value="Agents">Agents</option>
+          <option value="Monetization">Monetization</option>
+          <option value="Authority">Authority</option>
+        </select>
+      </div>
+      <div class="list" id="list"></div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="hero">
+      <div>
+        <h2 id="title">Week 1 — Day 1</h2>
+        <p id="subtitle">Learn → Build → Exercise → Grade → Unlock. No pass = no next day.</p>
+      </div>
+      <div class="row">
+        <span class="badge lvl" id="trackBadge">AI+Prompting</span>
+        <span class="badge" id="toolBadge">Tools: ChatGPT, Claude</span>
+        <span class="badge warn" id="statusBadge">Not passed</span>
+      </div>
+    </div>
+
+    <div class="tabs" style="margin-bottom:10px;">
+      <div class="tab active" data-tab="lesson">Lesson</div>
+      <div class="tab" data-tab="promptlab">Prompt Lab</div>
+      <div class="tab" data-tab="automationlab">Automation Lab</div>
+      <div class="tab" data-tab="notionos">Notion OS</div>
+    </div>
+
+    <div class="grid">
+      <section class="card" id="leftCard"></section>
+      <section class="card" id="rightCard"></section>
+    </div>
+  </main>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================
+   PWA: register service worker
+========================= */
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").catch(()=>{});
+  });
+}
+
+const PASS_THRESHOLD = 0.80; // 80%
+const STORAGE_KEY = "kreyolaihub_60d_pwa_strict_v2";
+
+/* =========================
+   COURSE (UPDATED: Make + API + Agents + Capstone Week)
+========================= */
+function buildCourse(){
+  const weeks = [
+    {
+      name: "AI Foundations + Prompt Basics",
+      track:"AI+Prompting",
+      tools:["ChatGPT","Claude"],
+      days:[
+        { t:"AI vs ML vs LLM", learn:[
+            "Define AI (umbrella), ML (training on data), LLM (token prediction).",
+            "Explain tokens + next-token prediction.",
+            "Explain hallucinations (probability + missing grounding)."
+          ],
+          build:["Write a 1-page explanation (EN + Kreyòl).","Create 5 Haitian/diaspora examples."],
+          exercise:"Write: (1) AI definition, (2) AI vs ML vs LLM, (3) 2 examples, (4) explain to a 12-year-old."
+        },
+        { t:"How LLMs Actually Work", learn:[
+            "Context window + why memory is limited.",
+            "Why models can be confidently wrong.",
+            "Verification habits: constraints + tests + sources."
+          ],
+          build:["Create a personal verification checklist.","Create a 'When NOT to use AI' list."],
+          exercise:"Explain tokens + context window + 3 failure modes + your verification method."
+        },
+        { t:"Prompt Framework (Role→Task→Context→Constraints)", learn:[
+            "Good prompts are specific, testable, structured.",
+            "Constraints protect quality and reduce hallucinations."
+          ],
+          build:["Upgrade 5 weak prompts into strong prompts.","Force JSON output once."],
+          exercise:"Submit 3 before/after prompt upgrades + show short outputs."
+        },
+        { t:"Multi-step Prompting (Draft→Critique→Improve→Final)", learn:[
+            "Self-critique loop to improve reliability.",
+            "How to detect missing info and ask clarifying questions."
+          ],
+          build:["Build a 4-step workflow for a YouTube script.","Build a 4-step workflow for a client proposal."],
+          exercise:"Submit both workflows + what improved from draft to final."
+        },
+        { t:"AI Risks + Client Privacy (Mandatory)", learn:[
+            "Never paste sensitive client data into AI tools.",
+            "Bias in multilingual contexts and how to mitigate.",
+            "Safe outputs: no medical/legal certainty claims."
+          ],
+          build:["Write a client-safe AI policy.","Write a learner policy for KreyòlAIHub."],
+          exercise:"Create 10 Do/Don’t rules + 2 bias examples + what you must never paste."
+        },
+        { t:"Week 1 Review + Teaching", learn:[
+            "Teaching proves mastery.",
+            "Clear frameworks build authority."
+          ],
+          build:["Write a Week 1 summary (EN + Kreyòl).","Write 5 FAQs (EN + Kreyòl)."],
+          exercise:"Submit: 10-bullet summary + 5 FAQs + 3 common misunderstandings corrected."
+        }
+      ]
+    },
+
+    {
+      name:"Advanced Prompting + Output Control",
+      track:"AI+Prompting",
+      tools:["ChatGPT","Claude"],
+      days:[
+        { t:"Structured Outputs (JSON) — Reliability", learn:[
+            "Why JSON output is critical for automations.",
+            "Schemas: required fields, types, validation."
+          ],
+          build:["Create 10 JSON templates (email, summary, CRM note, proposal)."],
+          exercise:"Write 3 prompts that reliably output valid JSON + explain constraints used."
+        },
+        { t:"Prompt Evaluation (Rubrics)", learn:[
+            "Scoring output: accuracy, clarity, structure, usefulness.",
+            "Edge cases: missing data, wrong assumptions."
+          ],
+          build:["Create a grading rubric for outputs.","Run 5 tests on one prompt and improve it."],
+          exercise:"Submit rubric + test results + what you changed and why."
+        },
+        { t:"Claude vs ChatGPT Decision Rules", learn:[
+            "When to use which tool (context length, structure, style).",
+            "How to compare outputs fairly."
+          ],
+          build:["Compare 3 tasks across both tools.","Write your decision rules."],
+          exercise:"Submit a comparison table + 5 tool-choice rules."
+        },
+        { t:"Prompt Library System (Versioning)", learn:[
+            "Save prompts with purpose + examples + v1→v2 improvements."
+          ],
+          build:["Create your prompt library structure (app Prompt Lab or Notion)."],
+          exercise:"Submit 12 prompts with version notes + rating."
+        },
+        { t:"Client-ready Prompt Packs", learn:[
+            "Build prompt packs for: leads, onboarding, proposals, content."
+          ],
+          build:["Create 4 prompt packs (5 prompts each)."],
+          exercise:"Submit pack list + 2 example outputs per pack."
+        },
+        { t:"Week 2 Review", learn:["Convert knowledge into teaching assets."],
+          build:["Write 1 mini lesson (EN + Kreyòl) on prompting.","Write 1 'AI safety' explainer."],
+          exercise:"Deliver: 1 mini lesson (EN + Kreyòl) + homework assignment."
+        }
+      ]
+    },
+
+    {
+      name:"Notion OS Mastery (Databases + Dashboards)",
+      track:"Notion",
+      tools:["Notion","Notion AI"],
+      days:[
+        { t:"Notion Basics", learn:["Pages vs databases.","Views, filters, sorts."],
+          build:["Create Learning Tracker DB.","Create Daily Log template."],
+          exercise:"Submit: DB fields + template + 5 sample entries."
+        },
+        { t:"CRM Database", learn:["Pipeline stages + lead statuses."],
+          build:["Create Leads/Clients DB with stages.","Add 10 sample records."],
+          exercise:"Submit CRM structure + lead→client flow."
+        },
+        { t:"Projects DB + Relations", learn:["Relate clients to projects for real systems."],
+          build:["Create Projects DB linked to Clients.","Add rollup of active projects per client."],
+          exercise:"Submit relation + rollup + 3 use cases."
+        },
+        { t:"Templates + SOPs", learn:["Templates make delivery repeatable."],
+          build:["Create Onboarding template.","Create Delivery checklist template."],
+          exercise:"Submit templates + how you’ll use them with clients."
+        },
+        { t:"Dashboards (Operator View)", learn:["Home dashboard = daily control panel."],
+          build:["Dashboard with: tasks, CRM, projects, content, learning."],
+          exercise:"Submit dashboard layout + daily routine."
+        },
+        { t:"Week 3 Review (Notion OS)", learn:["Package as a reusable system."],
+          build:["Write a 1-page Notion OS guide (EN + Kreyòl)."],
+          exercise:"Submit: guide + 'setup steps' checklist."
+        }
+      ]
+    },
+
+    {
+      name:"Zapier Core (Fast Client Wins)",
+      track:"Zapier",
+      tools:["Zapier","Email","Notion"],
+      days:[
+        { t:"Zapier Foundations", learn:["Triggers vs actions.","Multi-step Zaps."],
+          build:["Build: Form → Notion CRM.","Test 5 runs."],
+          exercise:"Submit: steps + test evidence + saved data fields."
+        },
+        { t:"Formatter (Clean Data)", learn:["Normalize names, phones, dates."],
+          build:["Add Formatter steps to your zap."],
+          exercise:"Submit before/after data + formatting logic."
+        },
+        { t:"Filters + Paths (Branching)", learn:["If/else logic."],
+          build:["Build branching: business lead vs newsletter lead."],
+          exercise:"Submit branch rules + 3 test cases."
+        },
+        { t:"Delays + Follow-ups", learn:["Automated follow-up sequences."],
+          build:["Build 1-day + 3-day follow-up emails."],
+          exercise:"Submit sequence + templates."
+        },
+        { t:"Error Alerts + Logging", learn:["Failures must notify you and log."],
+          build:["Create failure alert + log to Notion."],
+          exercise:"Submit monitoring plan + failure response."
+        },
+        { t:"Week 4 Review (Zapier SOP)", learn:["Document like a consultant."],
+          build:["Write a Zapier SOP template."],
+          exercise:"Submit SOP + 1-minute explanation text (EN + Kreyòl)."
+        }
+      ]
+    },
+
+    {
+      name:"Make.com Power Week (Consultant Mode)",
+      track:"Make",
+      tools:["Make.com","Notion","ChatGPT"],
+      days:[
+        { t:"Make Basics (Scenarios)", learn:["Scenarios vs Zaps.","Modules and data mapping."],
+          build:["Build Scenario: Form → Notion CRM."],
+          exercise:"Submit scenario steps + mapped fields + test run notes."
+        },
+        { t:"Routers + Filters", learn:["Branching workflows visually."],
+          build:["Add Router: business lead vs newsletter lead."],
+          exercise:"Submit router rules + 3 test cases."
+        },
+        { t:"Iterators/Aggregators", learn:["Process lists, batch records, combine outputs."],
+          build:["Iterate through multiple items and log results."],
+          exercise:"Submit iterator use + what problem it solves."
+        },
+        { t:"Transformations + Dedupe", learn:["Text parsing, mapping, preventing duplicates."],
+          build:["Implement dedupe logic (search before create)."],
+          exercise:"Submit dedupe logic + test evidence."
+        },
+        { t:"Error Handlers + Retries", learn:["Retries, error routes, alerts."],
+          build:["Add error handler route + alert + Notion log."],
+          exercise:"Submit failure plan + how you’ll monitor daily."
+        },
+        { t:"Week 5 Review (Make vs Zapier)", learn:["Choose tools intentionally."],
+          build:["Write Make vs Zapier comparison sheet."],
+          exercise:"Submit: comparison + your rules for when to use each."
+        }
+      ]
+    },
+
+    {
+      name:"Make Advanced + API Setup",
+      track:"Make",
+      tools:["Make.com","Notion","ChatGPT"],
+      days:[
+        { t:"Scenario 1 — Lead Machine (Pro)", learn:["End-to-end pipeline building."],
+          build:["Form → Notion CRM → AI summary → email → log."],
+          exercise:"Submit: steps + AI prompt used + logging approach."
+        },
+        { t:"Scenario 2 — Content Machine", learn:["Approval + publish-ready output."],
+          build:["Content DB → AI draft → approval step → final output."],
+          exercise:"Submit: approval flow + output formatting rules."
+        },
+        { t:"Scenario 3 — Onboarding + Tasks", learn:["Client intake creates projects/tasks."],
+          build:["Onboarding intake → project creation → tasks + follow-ups."],
+          exercise:"Submit: task creation logic + failure plan."
+        },
+        { t:"HTTP Module Intro (API call)", learn:["Call endpoints + parse JSON response."],
+          build:["Use HTTP module to call an endpoint and save response."],
+          exercise:"Submit: request method + headers + response fields saved."
+        },
+        { t:"Auth patterns (API key/Bearer)", learn:["Key vs token auth and where they go."],
+          build:["Simulate or implement Bearer token header in HTTP call."],
+          exercise:"Explain where auth lives + common mistakes (401/403)."
+        },
+        { t:"Week 6 Review", learn:["Write Make SOP: setup→tests→maintenance."],
+          build:["Write a 1-page Make SOP + reliability checklist."],
+          exercise:"Submit SOP + reliability checklist."
+        }
+      ]
+    },
+
+    {
+      name:"API Literacy Sprint",
+      track:"API",
+      tools:["Make HTTP","Docs","Notion/Sheets"],
+      days:[
+        { t:"API Fundamentals", learn:["GET vs POST.","Endpoints, headers, body, JSON."],
+          build:["Read docs of a real API and list required params."],
+          exercise:"Explain API call structure + show a sample JSON request/response."
+        },
+        { t:"Status Codes + Debug", learn:["400/401/403/429/500 and what to do."],
+          build:["Create an error-handling playbook."],
+          exercise:"Submit playbook + 3 examples of how you’d respond."
+        },
+        { t:"Rate Limits + Retries", learn:["429 handling + backoff."],
+          build:["Add retries/alerts in Make error handler."],
+          exercise:"Submit retry logic + monitoring plan."
+        },
+        { t:"Pagination Basics", learn:["Why results come in pages."],
+          build:["Explain pagination concept + how you’d handle it."],
+          exercise:"Submit explanation + simple pseudo-plan in Make."
+        },
+        { t:"API Connector Workflow", learn:["One real connector end-to-end."],
+          build:["Make HTTP call → save response to Notion/Sheet → handle 401/429."],
+          exercise:"Submit: workflow + saved fields + test evidence."
+        },
+        { t:"Week 7 Review (API Survival Guide)", learn:["Teach it."],
+          build:["Write API Survival Guide (EN) + Kreyòl summary."],
+          exercise:"Submit both + 5 quiz questions."
+        }
+      ]
+    },
+
+    {
+      name:"Agents Sprint (Conversational AI)",
+      track:"Agents",
+      tools:["Voiceflow","Make/Zapier","Notion"],
+      days:[
+        { t:"Agent vs Automation", learn:["Agents decide; automations route data."],
+          build:["Write your framework: when to use automation vs agent."],
+          exercise:"Submit 1-page framework + 3 examples."
+        },
+        { t:"Voiceflow Basics", learn:["Intents, variables, flows, fallbacks."],
+          build:["Build a simple bilingual (EN/Kreyòl) intake flow."],
+          exercise:"Submit flow steps + fallback logic."
+        },
+        { t:"Agent Prototype: AI Receptionist", learn:["Capture intent + key details."],
+          build:["Build receptionist that captures lead info."],
+          exercise:"Submit: conversation design + capture fields."
+        },
+        { t:"Agent → Store Data", learn:["Agent outputs must log to CRM."],
+          build:["Send captured data to Notion via Make/Zapier."],
+          exercise:"Submit: integration steps + test evidence."
+        },
+        { t:"Immigration/NGO Helper (Option)", learn:["Checklist + next steps."],
+          build:["Build helper flow or extend receptionist with checklist generation."],
+          exercise:"Submit: checklist output + safety boundaries."
+        },
+        { t:"Week 8 Review (Agent Demo)", learn:["Demo wins clients."],
+          build:["Write a demo walkthrough outline."],
+          exercise:"Submit outline + what screenshots you’ll show."
+        }
+      ]
+    },
+
+    {
+      name:"Packaging + Monetization Toolkit",
+      track:"Monetization",
+      tools:["Notion","Docs","ChatGPT"],
+      days:[
+        { t:"3 Offer Tiers", learn:["Outcome-based, not tool-based."],
+          build:["Starter/Growth/Premium with deliverables + timeline."],
+          exercise:"Submit offers + who it’s NOT for."
+        },
+        { t:"Pricing + ROI", learn:["Time saved → money earned."],
+          build:["Create simple ROI calculator logic."],
+          exercise:"Submit ROI framing for each tier."
+        },
+        { t:"AI Audit Template", learn:["Audit identifies automation wins."],
+          build:["Create audit template + scoring method."],
+          exercise:"Submit template + example filled (simulated)."
+        },
+        { t:"Proposal Template", learn:["Consistent structure wins trust."],
+          build:["Create reusable proposal template."],
+          exercise:"Submit template + example proposal (simulated)."
+        },
+        { t:"Case Study (Simulated)", learn:["Proof beats claims."],
+          build:["Write 1 before/after case study with metrics."],
+          exercise:"Submit case study + what proof you’d show."
+        },
+        { t:"Week 9 Review", learn:["Prepare for real delivery."],
+          build:["Create a Consulting Kit index in Notion."],
+          exercise:"Submit list of assets + delivery checklist."
+        }
+      ]
+    },
+
+    {
+      name:"Real Client Project + Kreyòl Niche System (MANDATORY)",
+      track:"Authority",
+      tools:["Make/Zapier","Voiceflow","Notion","ChatGPT"],
+      days:[
+        { t:"Client Project Plan", learn:["Choose a real client and scope a small win."],
+          build:["Write scope: problem → solution → deliverables → timeline."],
+          exercise:"Submit project plan + success metrics."
+        },
+        { t:"Client Intake + Build", learn:["Collect requirements cleanly."],
+          build:["Create intake form + CRM record + workflow map."],
+          exercise:"Submit: intake + workflow diagram + failure plan."
+        },
+        { t:"Implement + Document", learn:["Deliver like a professional."],
+          build:["Implement automation and write SOP + handover checklist."],
+          exercise:"Submit SOP + handover checklist + before/after map."
+        },
+        { t:"Kreyòl Translation & QA Pipeline", learn:["Your niche product system."],
+          build:["Build: request → translate → QA/glossary → output → log."],
+          exercise:"Submit: workflow + QA rules + sensitive terms warnings."
+        },
+        { t:"Package + Pricing Offer", learn:["Turn system into sellable kit."],
+          build:["Write product page outline + pricing tiers."],
+          exercise:"Submit: pricing + what’s included + who it’s for."
+        },
+        { t:"Final Review + Launch Assets", learn:["Publish proof + next steps."],
+          build:["Write 5 authority posts + 1 demo outline + outreach plan."],
+          exercise:"Submit: 10 next actions + what you sell + your rules."
+        }
+      ]
+    }
+  ];
+
+  // Flatten into 60 days
+  const days = [];
+  let dayNum = 1;
+  for (let w=0; w<weeks.length; w++){
+    for (let d=0; d<weeks[w].days.length; d++){
+      const entry = weeks[w].days[d];
+      days.push({
+        day: dayNum,
+        week: w+1,
+        weekName: weeks[w].name,
+        track: weeks[w].track,
+        tools: weeks[w].tools,
+        title: `Week ${w+1} — Day ${d+1}: ${entry.t}`,
+        learn: entry.learn,
+        build: entry.build,
+        exercise: entry.exercise,
+        rubric: makeRubric(weeks[w].track)
+      });
+      dayNum++;
+    }
+  }
+  return days;
+
+  function makeRubric(track){
+    let categories;
+    if(track === "AI+Prompting"){
+      categories = [
+        {key:"accuracy", name:"Accuracy", max:5, mustMeet:4},
+        {key:"clarity", name:"Clarity", max:5, mustMeet:4},
+        {key:"structure", name:"Structure", max:5, mustMeet:3},
+        {key:"examples", name:"Examples", max:5, mustMeet:3},
+        {key:"constraints", name:"Constraints/format control", max:5, mustMeet:3}
+      ];
+    }else if(track === "Notion"){
+      categories = [
+        {key:"system_design", name:"System design", max:5, mustMeet:4},
+        {key:"usability", name:"Usability", max:5, mustMeet:4},
+        {key:"structure", name:"Structure", max:5, mustMeet:3},
+        {key:"evidence", name:"Evidence (screens/description)", max:5, mustMeet:3},
+        {key:"repeatability", name:"Repeatability (templates)", max:5, mustMeet:3}
+      ];
+    }else if(track === "Zapier"){
+      categories = [
+        {key:"logic", name:"Automation logic", max:5, mustMeet:4},
+        {key:"data_quality", name:"Data quality", max:5, mustMeet:4},
+        {key:"reliability", name:"Reliability/error handling", max:5, mustMeet:3},
+        {key:"evidence", name:"Evidence (tests)", max:5, mustMeet:3},
+        {key:"documentation", name:"Documentation clarity", max:5, mustMeet:3}
+      ];
+    }else if(track === "Make"){
+      categories = [
+        {key:"scenario_logic", name:"Scenario logic", max:5, mustMeet:4},
+        {key:"mapping", name:"Data mapping/transformations", max:5, mustMeet:4},
+        {key:"routing", name:"Routers/filters/branching", max:5, mustMeet:3},
+        {key:"reliability", name:"Error handling/retries", max:5, mustMeet:3},
+        {key:"evidence", name:"Evidence (tests)", max:5, mustMeet:3}
+      ];
+    }else if(track === "API"){
+      categories = [
+        {key:"understanding", name:"API understanding", max:5, mustMeet:4},
+        {key:"docs", name:"Docs reading accuracy", max:5, mustMeet:4},
+        {key:"implementation", name:"Implementation in Make", max:5, mustMeet:3},
+        {key:"errors", name:"Error handling (401/429/etc.)", max:5, mustMeet:3},
+        {key:"clarity", name:"Clarity", max:5, mustMeet:3}
+      ];
+    }else if(track === "Agents"){
+      categories = [
+        {key:"flow", name:"Conversation flow", max:5, mustMeet:4},
+        {key:"capture", name:"Data capture quality", max:5, mustMeet:4},
+        {key:"fallback", name:"Fallback/error handling", max:5, mustMeet:3},
+        {key:"integration", name:"Integration to CRM", max:5, mustMeet:3},
+        {key:"safety", name:"Safety boundaries", max:5, mustMeet:3}
+      ];
+    }else if(track === "Monetization"){
+      categories = [
+        {key:"clarity", name:"Clarity", max:5, mustMeet:4},
+        {key:"outcome", name:"Outcome focus", max:5, mustMeet:4},
+        {key:"deliverables", name:"Deliverables quality", max:5, mustMeet:3},
+        {key:"pricing_roi", name:"Pricing/ROI logic", max:5, mustMeet:3},
+        {key:"professionalism", name:"Professionalism", max:5, mustMeet:3}
+      ];
+    }else{ // Authority
+      categories = [
+        {key:"delivery", name:"Delivery/proof", max:5, mustMeet:4},
+        {key:"documentation", name:"Documentation", max:5, mustMeet:4},
+        {key:"niche_system", name:"Niche system quality", max:5, mustMeet:3},
+        {key:"clarity", name:"Clarity", max:5, mustMeet:3},
+        {key:"next_steps", name:"Next steps/action plan", max:5, mustMeet:3}
+      ];
+    }
+
+    const criticalFails = [
+      "Encourages sharing sensitive client data into AI tools (privacy violation).",
+      "Gives unsafe/illegal guidance.",
+      "Contains major factual errors that would mislead a business client."
+    ];
+
+    return { total: 25, passScore: 20, categories, criticalFails };
+  }
+}
+
+const COURSE = buildCourse();
+
+/* =========================
+   STATE
+========================= */
+const defaultState = {
+  currentDay: 1,
+  unlockedUntil: 1,
+  yourName: "",
+  submissions: {},
+  checklist: {},
+  grades: {},
+  promptLab: [],
+  automationLab: [],
+  capstone: { clientProject: false, translationKit: false }
+};
+
+let state = loadState();
+
+function loadState(){
+  try{
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if(!raw) return {...defaultState};
+    return Object.assign({...defaultState}, JSON.parse(raw));
+  }catch{
+    return {...defaultState};
+  }
+}
+function saveState(){ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }
+
+/* =========================
+   HELPERS
+========================= */
+const $ = (id)=>document.getElementById(id);
+const toastEl = $("toast");
+function toast(msg){
+  toastEl.textContent = msg;
+  toastEl.classList.add("show");
+  setTimeout(()=>toastEl.classList.remove("show"), 2200);
+}
+function getDay(dayNum){ return COURSE.find(d=>d.day===dayNum) || COURSE[0]; }
+function canOpen(dayNum){ return dayNum <= state.unlockedUntil; }
+function isPassed(dayNum){ const g = state.grades[dayNum]; return !!(g && g.pass === true); }
+function overallPct(){ return Math.round((state.unlockedUntil / 60) * 100); }
+
+/* =========================
+   THEME
+========================= */
+function applySavedTheme(){
+  const t = localStorage.getItem("kreyolaihub_theme") || "light";
+  if(t === "cyber") document.body.classList.add("cyber");
+}
+function toggleTheme(){
+  document.body.classList.toggle("cyber");
+  localStorage.setItem("kreyolaihub_theme", document.body.classList.contains("cyber") ? "cyber" : "light");
+}
+applySavedTheme();
+
+/* =========================
+   UI STATE
+========================= */
+let activeTab = "lesson";
+
+/* =========================
+   SIDEBAR LIST
+========================= */
+function renderList(){
+  const list = $("list");
+  list.innerHTML = "";
+
+  const q = $("search").value.trim().toLowerCase();
+  const f = $("filter").value;
+
+  for(const d of COURSE){
+    if(f !== "all" && d.track !== f) continue;
+
+    const hay = (d.title + " " + d.weekName + " " + d.track + " " + d.tools.join(" ")).toLowerCase();
+    if(q && !hay.includes(q)) continue;
+
+    const item = document.createElement("div");
+    item.className = "item" + (canOpen(d.day) ? "" : " locked");
+    item.onclick = ()=>{
+      if(!canOpen(d.day)){
+        toast(`Locked. Pass Day ${state.unlockedUntil} first.`);
+        return;
+      }
+      selectDay(d.day);
+    };
+
+    const meta = document.createElement("div");
+    meta.className = "meta";
+    const b = document.createElement("b");
+    b.textContent = `#${d.day} • ${d.title.replace(/^Week \d+ — Day \d+: /,"")}`;
+    const s = document.createElement("span");
+    s.textContent = `${d.track} • ${d.tools.join(", ")}`;
+    meta.appendChild(b);
+    meta.appendChild(s);
+
+    const badge = document.createElement("span");
+    if(!canOpen(d.day)) { badge.className="badge bad"; badge.textContent="Locked"; }
+    else if(isPassed(d.day)) { badge.className="badge ok"; badge.textContent="Passed"; }
+    else { badge.className="badge warn"; badge.textContent="Not passed"; }
+
+    item.appendChild(meta);
+    item.appendChild(badge);
+    list.appendChild(item);
+  }
+}
+
+/* =========================
+   HEADER + PROGRESS
+========================= */
+function renderHeader(){
+  const d = getDay(state.currentDay);
+  $("pillWeek").textContent = d.week;
+  $("pillDay").textContent = d.day;
+  $("pillUnlocked").textContent = state.unlockedUntil;
+  $("bar").style.width = overallPct() + "%";
+
+  const gate = state.unlockedUntil;
+  const gateDay = getDay(gate);
+  $("gateNote").textContent =
+    `Current gate: Day ${gate} (${gateDay.track}) • Pass rule: ≥ ${gateDay.rubric.passScore}/${gateDay.rubric.total} (80%) and no critical fails.`;
+
+  $("yourName").value = state.yourName || "";
+}
+
+/* =========================
+   GRADING PROMPTS
+========================= */
+function buildGradingPrompt(dayNum){
+  const d = getDay(dayNum);
+  const sub = (state.submissions[dayNum] || "").trim();
+  const r = d.rubric;
+
+  const cats = r.categories.map(c=>`- ${c.name} (${c.key}): 0–${c.max} (minimum ${c.mustMeet})`).join("\n");
+  const critical = r.criticalFails.map(x=>`- ${x}`).join("\n");
+
+  return `You are a strict grader for an AI Automation Specialist program.
+
+LESSON:
+${d.title}
+TRACK: ${d.track}
+TOOLS: ${d.tools.join(", ")}
+
+RUBRIC (Total ${r.total}, PASS if score >= ${r.passScore} AND no critical fails):
+${cats}
+
+CRITICAL FAIL CONDITIONS (any one => FAIL):
+${critical}
+
+GRADING RULES:
+- Strict but fair.
+- If missing evidence (tests/screens/description), penalize.
+- If unclear, penalize clarity/structure.
+- Provide actionable required fixes.
+
+OUTPUT FORMAT:
+Return ONLY valid JSON with EXACT keys:
+{
+  "pass": true|false,
+  "total": ${r.total},
+  "score": number,
+  "breakdown": { ${r.categories.map(c=>`"${c.key}": number`).join(", ")} },
+  "critical_fails": [string],
+  "required_fixes": [string],
+  "feedback": "string",
+  "suggested_rewrite": "string"
+}
+
+STUDENT SUBMISSION:
+"""
+${sub || "[EMPTY SUBMISSION]"}
+"""`;
+}
+
+function buildResubmitPrompt(dayNum){
+  const d = getDay(dayNum);
+  const sub = (state.submissions[dayNum] || "").trim();
+  const g = state.grades[dayNum];
+
+  const fixes = (g && Array.isArray(g.required_fixes) && g.required_fixes.length)
+    ? g.required_fixes.map((f,i)=>`${i+1}. ${f}`).join("\n")
+    : "No required fixes recorded. Ask the grader for required fixes and paste the updated JSON.";
+
+  return `You are my strict coach. My assignment FAILED and I must resubmit.
+
+LESSON:
+${d.title}
+
+REQUIRED FIXES (must address all):
+${fixes}
+
+RULES:
+- Do not add unrelated content.
+- Improve accuracy first, then clarity, then structure.
+- Output two parts:
+  A) Corrected final submission
+  B) Checklist mapping each required fix to what you changed
+
+MY ORIGINAL SUBMISSION:
+"""
+${sub || "[EMPTY SUBMISSION]"}
+"""`;
+}
+
+/* =========================
+   APPLY GRADE (STRICT GATE)
+========================= */
+function applyGrade(dayNum, gradeObj){
+  const d = getDay(dayNum);
+  const r = d.rubric;
+
+  if(typeof gradeObj !== "object" || gradeObj === null) throw new Error("Invalid JSON object.");
+  if(typeof gradeObj.score !== "number" || typeof gradeObj.total !== "number") throw new Error("JSON needs numeric score and total.");
+  if(!gradeObj.breakdown || typeof gradeObj.breakdown !== "object") throw new Error("JSON needs breakdown object.");
+  if(!Array.isArray(gradeObj.critical_fails)) gradeObj.critical_fails = [];
+  if(!Array.isArray(gradeObj.required_fixes)) gradeObj.required_fixes = [];
+
+  const meetsScore = gradeObj.score >= r.passScore;
+  const hasCritical = gradeObj.critical_fails.length > 0;
+  gradeObj.pass = meetsScore && !hasCritical;
+
+  // Final gate: Day 60 requires capstones
+  if(dayNum === 60){
+    const cap = state.capstone || {clientProject:false, translationKit:false};
+    if(!cap.clientProject || !cap.translationKit){
+      gradeObj.pass = false;
+      gradeObj.required_fixes = gradeObj.required_fixes || [];
+      if(!cap.clientProject) gradeObj.required_fixes.push("Capstone missing: Real client project proof not completed (check the box only when you truly have proof).");
+      if(!cap.translationKit) gradeObj.required_fixes.push("Capstone missing: Kreyòl Translation & QA Pipeline not completed (workflow + QA + logging + offer).");
+    }
+  }
+
+  state.grades[dayNum] = gradeObj;
+
+  // Unlock next day ONLY if this day is the gate day
+  if(gradeObj.pass && dayNum === state.unlockedUntil && state.unlockedUntil < 60){
+    state.unlockedUntil += 1;
+  }
+
+  saveState();
+  toast(gradeObj.pass ? "PASS ✅ Next day unlocked." : "FAIL ❌ Fix required. Use resubmission prompt.");
+}
+
+/* =========================
+   TAB RENDERERS
+========================= */
+function renderLessonTab(){
+  const d = getDay(state.currentDay);
+
+  $("title").textContent = d.title;
+  $("subtitle").textContent = `${d.weekName} • Do the build tasks, then submit exercise, grade, and unlock.`;
+
+  $("trackBadge").textContent = d.track;
+  $("toolBadge").textContent = `Tools: ${d.tools.join(", ")}`;
+
+  const status = $("statusBadge");
+  if(isPassed(d.day)){ status.className="badge ok"; status.textContent="Passed"; }
+  else status.className="badge warn", status.textContent = canOpen(d.day) ? "Not passed" : "Locked";
+
+  const checks = state.checklist[d.day] || [false,false,false,false];
+  state.checklist[d.day] = checks;
+
+  const left = $("leftCard");
+  left.innerHTML = `
+    <h3 class="sectionTitle"><span class="k">Learn</span>What you must understand</h3>
+    <ul>${d.learn.map(x=>`<li>${escapeHtml(x)}</li>`).join("")}</ul>
+
+    <div class="divider"></div>
+
+    <h3 class="sectionTitle"><span class="k">Build</span>What you must build today</h3>
+    <ul>${d.build.map(x=>`<li>${escapeHtml(x)}</li>`).join("")}</ul>
+
+    <div class="divider"></div>
+
+    <h3 class="sectionTitle"><span class="k">Exercise</span>Submit to pass</h3>
+    <div class="small">Pass requirement: <b>≥ ${d.rubric.passScore}/${d.rubric.total} (80%)</b> + no critical fails.</div>
+    <div style="margin-top:8px; font-weight:800;">${escapeHtml(d.exercise)}</div>
+
+    <div class="divider"></div>
+
+    <h3 class="sectionTitle"><span class="k">Your submission</span></h3>
+    <textarea id="submission" placeholder="Write your submission here..."></textarea>
+
+    <div class="row" style="margin-top:10px;">
+      <button id="btnSaveSub">Save</button>
+      <button class="btnPrimary" id="btnCopyGrade">Copy grading prompt</button>
+      <button id="btnCopyResubmit">Copy resubmission prompt</button>
+    </div>
+
+    <div class="divider"></div>
+
+    <h3 class="sectionTitle"><span class="k">Daily checklist</span></h3>
+    <label class="checkRow"><input type="checkbox" id="c1"> <span>Study (notes done)</span></label>
+    <label class="checkRow"><input type="checkbox" id="c2"> <span>Build task completed</span></label>
+    <label class="checkRow"><input type="checkbox" id="c3"> <span>Exercise submitted</span></label>
+    <label class="checkRow"><input type="checkbox" id="c4"> <span>Graded + fixes applied</span></label>
+    <div class="small">Tip: If you fail, use the resubmission prompt and update your submission until you pass.</div>
+
+    ${d.week === 10 ? `
+      <div class="divider"></div>
+      <h3 class="sectionTitle"><span class="k">Capstone Gates</span>Required to finish Day 60</h3>
+      <label class="checkRow">
+        <input type="checkbox" id="capClient">
+        <span><b>Real client project delivered</b> (proof: intake + system + SOP + handover + before/after + confirmation)</span>
+      </label>
+      <label class="checkRow">
+        <input type="checkbox" id="capTrans">
+        <span><b>Kreyòl Translation & QA Pipeline built</b> (workflow + QA + logging + offer)</span>
+      </label>
+      <div class="small">These must be checked to pass Day 60, even if your score is 80%.</div>
+    ` : ``}
+  `;
+
+  const right = $("rightCard");
+  const g = state.grades[d.day];
+  const scoreText = g ? `${g.score}/${g.total}` : "—";
+  const noteText = g
+    ? (g.pass ? "PASS ✅ (Next day unlocked if this was the gate day.)" : `FAIL ❌ Fix: ${(g.required_fixes||[]).slice(0,3).join(" • ") || "See feedback."}`)
+    : `No grade yet. Paste grader JSON here after using the grading prompt.`;
+
+  right.innerHTML = `
+    <h3 class="sectionTitle"><span class="k">Grader</span>Paste JSON result</h3>
+    <textarea id="graderJson" class="mono" placeholder='{"pass":true,"total":25,"score":20,"breakdown":{"accuracy":4,"clarity":4,"structure":4,"examples":4,"constraints":4},"critical_fails":[],"required_fixes":[],"feedback":"...","suggested_rewrite":"..."}'></textarea>
+
+    <div class="row" style="margin-top:10px;">
+      <button class="btnPrimary" id="btnApplyGrade">Apply grade</button>
+      <button id="btnLoadGrade">Load last grade</button>
+    </div>
+
+    <div class="divider"></div>
+
+    <h3 class="sectionTitle"><span class="k">Status</span></h3>
+    <div class="row" style="align-items:baseline;">
+      <div>
+        <div class="small">Score</div>
+        <div class="score">${scoreText}</div>
+        <div class="small">${escapeHtml(noteText)}</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <h3 class="sectionTitle"><span class="k">Quick actions</span></h3>
+    <div class="row">
+      <button class="btnOk" id="btnGoNext">Go next (if unlocked)</button>
+      <button id="btnGoGate2">Go gate day</button>
+    </div>
+    <div class="small" style="margin-top:8px;">
+      Strict rule: you cannot open future days unless your current gate day is passed.
+    </div>
+  `;
+
+  $("submission").value = state.submissions[d.day] || "";
+
+  $("c1").checked = !!checks[0];
+  $("c2").checked = !!checks[1];
+  $("c3").checked = !!checks[2];
+  $("c4").checked = !!checks[3];
+
+  ["c1","c2","c3","c4"].forEach((id, idx)=>{
+    $(id).addEventListener("change", ()=>{
+      checks[idx] = $(id).checked;
+      state.checklist[d.day] = checks;
+      saveState();
+    });
+  });
+
+  // Capstone wiring (Week 10)
+  if(d.week === 10){
+    const capClient = document.getElementById("capClient");
+    const capTrans = document.getElementById("capTrans");
+    capClient.checked = !!(state.capstone && state.capstone.clientProject);
+    capTrans.checked = !!(state.capstone && state.capstone.translationKit);
+
+    capClient.addEventListener("change", ()=>{
+      state.capstone = state.capstone || {clientProject:false, translationKit:false};
+      state.capstone.clientProject = capClient.checked;
+      saveState();
+    });
+
+    capTrans.addEventListener("change", ()=>{
+      state.capstone = state.capstone || {clientProject:false, translationKit:false};
+      state.capstone.translationKit = capTrans.checked;
+      saveState();
+    });
+  }
+
+  $("btnSaveSub").onclick = ()=>{
+    state.submissions[d.day] = $("submission").value || "";
+    saveState();
+    toast("Saved.");
+  };
+
+  $("btnCopyGrade").onclick = async ()=>{
+    state.submissions[d.day] = $("submission").value || "";
+    saveState();
+    await navigator.clipboard.writeText(buildGradingPrompt(d.day));
+    toast("Grading prompt copied. Paste into ChatGPT/Claude.");
+  };
+
+  $("btnCopyResubmit").onclick = async ()=>{
+    state.submissions[d.day] = $("submission").value || "";
+    saveState();
+    await navigator.clipboard.writeText(buildResubmitPrompt(d.day));
+    toast("Resubmission prompt copied.");
+  };
+
+  $("btnApplyGrade").onclick = ()=>{
+    const raw = $("graderJson").value.trim();
+    if(!raw){ toast("Paste grader JSON first."); return; }
+    try{
+      const obj = JSON.parse(raw);
+      applyGrade(d.day, obj);
+      renderAll();
+    }catch(e){
+      toast("Invalid JSON: " + (e.message || e));
+    }
+  };
+
+  $("btnLoadGrade").onclick = ()=>{
+    const gg = state.grades[d.day];
+    if(!gg){ toast("No saved grade for this day."); return; }
+    $("graderJson").value = JSON.stringify(gg, null, 2);
+    toast("Loaded last grade.");
+  };
+
+  $("btnGoNext").onclick = ()=>{
+    const next = Math.min(state.currentDay + 1, 60);
+    if(!canOpen(next)){ toast("Next day is locked. Pass the gate day first."); return; }
+    selectDay(next);
+  };
+  $("btnGoGate2").onclick = ()=>selectDay(state.unlockedUntil);
+}
+
+function renderPromptLabTab(){
+  const left = $("leftCard");
+  left.innerHTML = `
+    <h3 class="sectionTitle"><span class="k">Prompt Lab</span>Build your reusable prompt library</h3>
+    <div class="small">Goal: 100+ prompts by Day 60. Store purpose, tool, version, and notes.</div>
+
+    <div class="divider"></div>
+
+    <div class="row">
+      <input id="plName" placeholder="Prompt name (e.g., Lead Summary JSON)" />
+      <select id="plTool">
+        <option>ChatGPT</option>
+        <option>Claude</option>
+        <option>Both</option>
+      </select>
+    </div>
+
+    <div style="margin-top:10px;">
+      <input id="plPurpose" placeholder="Purpose (what problem it solves)" />
+    </div>
+
+    <div style="margin-top:10px;">
+      <textarea id="plPrompt" placeholder="Paste your prompt here..."></textarea>
+    </div>
+
+    <div style="margin-top:10px;">
+      <textarea id="plNotes" placeholder="Notes (what works, constraints, improvements)..."></textarea>
+    </div>
+
+    <div class="row" style="margin-top:10px;">
+      <button class="btnPrimary" id="btnAddPrompt">Add prompt</button>
+      <button id="btnExportPrompts">Export prompts</button>
+    </div>
+  `;
+
+  const right = $("rightCard");
+  const items = [...state.promptLab].reverse();
+  right.innerHTML = `
+    <h3 class="sectionTitle"><span class="k">Your prompts</span>(${state.promptLab.length})</h3>
+    <div class="small">Tap a prompt to copy it. Use Delete to remove.</div>
+    <div class="divider"></div>
+    <div id="plList" class="list"></div>
+  `;
+
+  $("btnAddPrompt").onclick = ()=>{
+    const name = $("plName").value.trim();
+    const tool = $("plTool").value;
+    const purpose = $("plPurpose").value.trim();
+    const prompt = $("plPrompt").value.trim();
+    const notes = $("plNotes").value.trim();
+    if(!name || !prompt){ toast("Need a name + prompt."); return; }
+    state.promptLab.push({name, tool, purpose, prompt, notes, createdAt: new Date().toISOString()});
+    saveState();
+    toast("Prompt added.");
+    renderAll();
+  };
+
+  $("btnExportPrompts").onclick = ()=>{
+    const blob = new Blob([JSON.stringify(state.promptLab, null, 2)], {type:"application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "prompt_lab.json";
+    a.click();
+    URL.revokeObjectURL(url);
+    toast("Exported prompts.");
+  };
+
+  const plList = $("plList");
+  plList.innerHTML = "";
+  for(const p of items){
+    const div = document.createElement("div");
+    div.className = "item";
+    div.onclick = async ()=>{
+      await navigator.clipboard.writeText(p.prompt);
+      toast(`Copied: ${p.name}`);
+    };
+    const meta = document.createElement("div");
+    meta.className = "meta";
+    const b = document.createElement("b");
+    b.textContent = p.name;
+    const s = document.createElement("span");
+    s.textContent = `${p.tool} • ${p.purpose || "—"}`;
+    meta.appendChild(b); meta.appendChild(s);
+
+    const del = document.createElement("button");
+    del.textContent = "Delete";
+    del.className = "btnDanger";
+    del.onclick = (e)=>{
+      e.stopPropagation();
+      state.promptLab = state.promptLab.filter(x=>x !== p);
+      saveState();
+      renderAll();
+      toast("Deleted.");
+    };
+
+    div.appendChild(meta);
+    div.appendChild(del);
+    plList.appendChild(div);
+  }
+}
+
+function renderAutomationLabTab(){
+  const left = $("leftCard");
+  left.innerHTML = `
+    <h3 class="sectionTitle"><span class="k">Automation Lab</span>Track workflows like an engineer</h3>
+    <div class="small">Log: trigger, steps, output, risks, monitoring, ROI.</div>
+
+    <div class="divider"></div>
+
+    <input id="alName" placeholder="Workflow name (e.g., Lead Capture Machine)" />
+    <div style="margin-top:10px;">
+      <input id="alTrigger" placeholder="Trigger (what starts it?)" />
+    </div>
+    <div style="margin-top:10px;">
+      <textarea id="alActions" placeholder="Actions (step-by-step)..."></textarea>
+    </div>
+    <div style="margin-top:10px;">
+      <input id="alOutput" placeholder="Output (what does it produce?)" />
+    </div>
+    <div style="margin-top:10px;">
+      <input id="alTools" placeholder="Tools used (Zapier, Make, Notion, Voiceflow…)" />
+    </div>
+    <div style="margin-top:10px;">
+      <textarea id="alRisks" placeholder="Risks + error handling (what breaks? fallback?)..."></textarea>
+    </div>
+    <div style="margin-top:10px;">
+      <textarea id="alNotes" placeholder="Notes (tests, improvements, ROI)..."></textarea>
+    </div>
+
+    <div class="row" style="margin-top:10px;">
+      <button class="btnPrimary" id="btnAddAuto">Add workflow</button>
+      <button id="btnExportAuto">Export workflows</button>
+    </div>
+  `;
+
+  const right = $("rightCard");
+  const items = [...state.automationLab].reverse();
+  right.innerHTML = `
+    <h3 class="sectionTitle"><span class="k">Your workflows</span>(${state.automationLab.length})</h3>
+    <div class="small">Tap workflow to copy a clean summary for proposals.</div>
+    <div class="divider"></div>
+    <div id="alList" class="list"></div>
+  `;
+
+  $("btnAddAuto").onclick = ()=>{
+    const name = $("alName").value.trim();
+    const trigger = $("alTrigger").value.trim();
+    const actions = $("alActions").value.trim();
+    const output = $("alOutput").value.trim();
+    const tools = $("alTools").value.trim();
+    const risks = $("alRisks").value.trim();
+    const notes = $("alNotes").value.trim();
+    if(!name || !trigger || !actions || !output){ toast("Need name, trigger, actions, output."); return; }
+    state.automationLab.push({name, trigger, actions, output, tools, risks, notes, createdAt: new Date().toISOString()});
+    saveState();
+    toast("Workflow added.");
+    renderAll();
+  };
+
+  $("btnExportAuto").onclick = ()=>{
+    const blob = new Blob([JSON.stringify(state.automationLab, null, 2)], {type:"application/json"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "automation_lab.json";
+    a.click();
+    URL.revokeObjectURL(url);
+    toast("Exported workflows.");
+  };
+
+  const alList = $("alList");
+  alList.innerHTML = "";
+  for(const a of items){
+    const div = document.createElement("div");
+    div.className = "item";
+    div.onclick = async ()=>{
+      const summary =
+`WORKFLOW: ${a.name}
+TRIGGER: ${a.trigger}
+ACTIONS:
+${a.actions}
+OUTPUT: ${a.output}
+TOOLS: ${a.tools || "—"}
+RISKS/ERROR HANDLING:
+${a.risks || "—"}
+NOTES/ROI:
+${a.notes || "—"}`;
+      await navigator.clipboard.writeText(summary);
+      toast("Copied workflow summary.");
+    };
+
+    const meta = document.createElement("div");
+    meta.className="meta";
+    const b = document.createElement("b"); b.textContent = a.name;
+    const s = document.createElement("span"); s.textContent = `${a.tools || "Tools: —"} • Trigger: ${a.trigger}`;
+    meta.appendChild(b); meta.appendChild(s);
+
+    const del = document.createElement("button");
+    del.textContent = "Delete";
+    del.className = "btnDanger";
+    del.onclick = (e)=>{
+      e.stopPropagation();
+      state.automationLab = state.automationLab.filter(x=>x !== a);
+      saveState();
+      renderAll();
+      toast("Deleted.");
+    };
+
+    div.appendChild(meta);
+    div.appendChild(del);
+    alList.appendChild(div);
+  }
+}
+
+function renderNotionOSTab(){
+  const left = $("leftCard");
+  left.innerHTML = `
+    <h3 class="sectionTitle"><span class="k">Notion OS</span>Your 5-database operating system</h3>
+    <div class="small">Build these in Notion. This is your “best” foundation.</div>
+
+    <div class="divider"></div>
+
+    <h3 class="sectionTitle"><span class="k">1</span>Knowledge Vault</h3>
+    <ul>
+      <li>Topic</li>
+      <li>My explanation (EN)</li>
+      <li>My explanation (Kreyòl)</li>
+      <li>Business explanation (simple ROI)</li>
+      <li>Confidence (1–5)</li>
+    </ul>
+
+    <h3 class="sectionTitle"><span class="k">2</span>Prompt Library</h3>
+    <ul>
+      <li>Name, Purpose, Tool, Version</li>
+      <li>Prompt text</li>
+      <li>Output type (JSON/Text)</li>
+      <li>Test cases + rating</li>
+    </ul>
+
+    <h3 class="sectionTitle"><span class="k">3</span>Automation Lab</h3>
+    <ul>
+      <li>Workflow name</li>
+      <li>Trigger → Actions → Output</li>
+      <li>Failure handling + monitoring</li>
+      <li>ROI notes</li>
+    </ul>
+
+    <h3 class="sectionTitle"><span class="k">4</span>Monetization Studio</h3>
+    <ul>
+      <li>Offer tiers</li>
+      <li>Deliverables</li>
+      <li>Pricing + ROI logic</li>
+      <li>Case studies</li>
+    </ul>
+
+    <h3 class="sectionTitle"><span class="k">5</span>Authority Tracker</h3>
+    <ul>
+      <li>Post idea</li>
+      <li>Script</li>
+      <li>Design prompt (Canva)</li>
+      <li>Publish + repurpose</li>
+    </ul>
+
+    <div class="divider"></div>
+    <div class="small">Rule: Don’t “learn tools”. Build systems that produce results daily.</div>
+  `;
+
+  const right = $("rightCard");
+  right.innerHTML = `
+    <h3 class="sectionTitle"><span class="k">Copy blocks</span>Paste into Notion</h3>
+    <div class="small">Tap to copy these as starting templates.</div>
+    <div class="divider"></div>
+    <div class="list" id="nbList"></div>
+  `;
+
+  const blocks = [
+    {
+      title:"Knowledge Vault fields",
+      text:`Knowledge Vault (Database Fields)
+- Topic (title)
+- My explanation (EN) (text)
+- My explanation (Kreyòl) (text)
+- Business explanation (text)
+- Confidence (1–5) (select)
+- Examples (text)
+- Common mistakes (text)`
+    },
+    {
+      title:"Prompt Library fields",
+      text:`Prompt Library (Database Fields)
+- Name (title)
+- Purpose (text)
+- Tool (select: ChatGPT/Claude/Both)
+- Version (text: v1/v2/v3)
+- Prompt (text)
+- Output type (select: JSON/Text)
+- Tests (text)
+- Rating (1–5)
+- Notes (text)`
+    },
+    {
+      title:"Automation Lab fields",
+      text:`Automation Lab (Database Fields)
+- Workflow name (title)
+- Trigger (text)
+- Actions (text)
+- Output (text)
+- Tools (multi-select)
+- Risks & error handling (text)
+- Monitoring plan (text)
+- ROI notes (text)
+- Status (select: Draft/Working/Client-ready)`
+    },
+    {
+      title:"Offer template",
+      text:`Offer Template
+- Name:
+- Target client:
+- Problem:
+- Outcome:
+- Deliverables:
+- Timeline:
+- Price:
+- ROI framing:
+- Not-for filter:
+- Requirements from client:
+- Support/maintenance:`
+    }
+  ];
+
+  const nb = $("nbList");
+  nb.innerHTML = "";
+  for(const b of blocks){
+    const div = document.createElement("div");
+    div.className="item";
+    div.onclick = async ()=>{
+      await navigator.clipboard.writeText(b.text);
+      toast(`Copied: ${b.title}`);
+    };
+    const meta = document.createElement("div");
+    meta.className="meta";
+    const bt = document.createElement("b"); bt.textContent = b.title;
+    const sp = document.createElement("span"); sp.textContent = "Tap to copy";
+    meta.appendChild(bt);
+    meta.appendChild(sp);
+    const tag = document.createElement("span");
+    tag.className="badge lvl";
+    tag.textContent="Copy";
+    div.appendChild(meta);
+    div.appendChild(tag);
+    nb.appendChild(div);
+  }
+}
+
+/* =========================
+   TAB SWITCH
+========================= */
+function renderTabs(){
+  document.querySelectorAll(".tab").forEach(t=>{
+    t.classList.toggle("active", t.dataset.tab === activeTab);
+  });
+
+  if(activeTab === "lesson") renderLessonTab();
+  if(activeTab === "promptlab") renderPromptLabTab();
+  if(activeTab === "automationlab") renderAutomationLabTab();
+  if(activeTab === "notionos") renderNotionOSTab();
+}
+
+/* =========================
+   SELECT DAY
+========================= */
+function selectDay(dayNum){
+  state.currentDay = dayNum;
+  saveState();
+  renderAll();
+}
+
+/* =========================
+   CERTIFICATE
+========================= */
+function generateCertificate(){
+  if(!state.yourName.trim()){
+    toast("Add your name first.");
+    return;
+  }
+  if(state.unlockedUntil < 60 && !isPassed(60)){
+    toast("Certificate unlocks when you finish Day 60 (passed) or unlock all days.");
+    return;
+  }
+  const date = new Date().toLocaleDateString();
+  const pct = overallPct();
+  const html = `
+<!doctype html><html><head><meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>KreyòlAIHub Certificate</title>
+<style>
+  body{margin:0; font-family: ui-sans-serif, system-ui; background:#0b1020; color:#eaf0ff; display:flex; min-height:100vh; align-items:center; justify-content:center;}
+  .cert{width:min(900px, 92vw); padding:46px; border-radius:26px; border:1px solid rgba(255,255,255,.14);
+        background: radial-gradient(900px 500px at 20% 0%, rgba(45,107,255,.16), transparent 55%),
+                    radial-gradient(800px 500px at 90% 0%, rgba(255,122,24,.14), transparent 55%),
+                    rgba(16,26,48,.55);
+        box-shadow: 0 24px 60px rgba(0,0,0,.4);
+  }
+  h1{margin:0; font-size:34px;}
+  .sub{color:rgba(234,240,255,.75); margin-top:8px}
+  .name{margin:22px 0 6px; font-size:30px; font-weight:950}
+  .line{height:1px; background:rgba(255,255,255,.12); margin:20px 0}
+  .meta{display:flex; gap:14px; flex-wrap:wrap; color:rgba(234,240,255,.75)}
+  .pill{padding:8px 12px; border-radius:999px; border:1px solid rgba(255,255,255,.14); background:rgba(255,255,255,.04)}
+  .small{margin-top:18px; color:rgba(234,240,255,.65); font-size:12px}
+  .brand{margin-top:22px; font-weight:950; color:rgba(45,107,255,.95)}
+</style></head>
+<body>
+  <div class="cert">
+    <h1>Certificate of Completion</h1>
+    <div class="sub">KreyòlAIHub — 60-Day AI Automation Specialist (Solo)</div>
+    <div class="name">${escapeHtml(state.yourName)}</div>
+    <div class="sub">has completed the 60-day program with strict progression (80% pass gate).</div>
+    <div class="line"></div>
+    <div class="meta">
+      <div class="pill">Completion: ${pct}%</div>
+      <div class="pill">Issued: ${date}</div>
+      <div class="pill">Mode: Offline-first PWA</div>
+    </div>
+    <div class="small">Print or Save as PDF from your browser’s print menu.</div>
+    <div class="brand">KreyòlAIHub</div>
+  </div>
+</body></html>`;
+  const w = window.open("", "_blank");
+  w.document.open();
+  w.document.write(html);
+  w.document.close();
+}
+
+/* =========================
+   EXPORT / RESET
+========================= */
+function exportAll(){
+  const blob = new Blob([JSON.stringify(state, null, 2)], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "kreyolaihub_60d_backup.json";
+  a.click();
+  URL.revokeObjectURL(url);
+  toast("Exported backup.");
+}
+
+function resetAll(){
+  if(!confirm("Reset ALL progress? Export first if you want a backup.")) return;
+  localStorage.removeItem(STORAGE_KEY);
+  state = loadState();
+  renderAll();
+  toast("Reset complete.");
+}
+
+function escapeHtml(s){
+  return String(s)
+    .replaceAll("&","&amp;")
+    .replaceAll("<","&lt;")
+    .replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;");
+}
+
+/* =========================
+   RENDER ALL
+========================= */
+function renderAll(){
+  renderHeader();
+  renderList();
+  renderTabs();
+}
+
+/* =========================
+   EVENTS
+========================= */
+$("btnTheme").onclick = ()=>{ toggleTheme(); toast("Theme changed."); };
+$("btnGoGate").onclick = ()=> selectDay(state.unlockedUntil);
+
+$("search").addEventListener("input", renderList);
+$("filter").addEventListener("change", renderList);
+
+document.querySelectorAll(".tab").forEach(t=>{
+  t.addEventListener("click", ()=>{
+    activeTab = t.dataset.tab;
+    renderAll();
+  });
+});
+
+$("btnExport").onclick = exportAll;
+$("btnReset").onclick = resetAll;
+
+$("btnSaveName").onclick = ()=>{
+  state.yourName = $("yourName").value.trim();
+  saveState();
+  toast("Name saved.");
+};
+
+$("btnCert").onclick = generateCertificate;
+
+$("btnInstallHelp").onclick = ()=>{
+  alert(
+    "Install on iPhone (after hosting on GitHub Pages):\n\n" +
+    "1) Open your course site in Safari.\n" +
+    "2) Tap Share (square with arrow).\n" +
+    "3) Tap 'Add to Home Screen'.\n" +
+    "4) Open it from your Home Screen.\n\n" +
+    "Offline:\n" +
+    "- Open once online to cache.\n" +
+    "- Then it works in airplane mode."
+  );
+};
+
+/* =========================
+   INIT
+========================= */
+renderAll();
+</script>
+</body>
+</html>
