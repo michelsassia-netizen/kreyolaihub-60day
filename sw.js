@@ -1,4 +1,4 @@
-const CACHE_NAME = "kreyolaihub-60d-v2";
+const CACHE_NAME = "kreyolaihub-60d-v3";
 const ASSETS = [
   "./",
   "./index.html",
