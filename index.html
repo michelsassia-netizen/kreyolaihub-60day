@@ -1924,14 +1924,7 @@ function renderList(){
 
     const item = document.createElement("div");
     item.className = "item" + (canOpen(d.day) ? "" : " locked");
-    item.onclick = ()=>{
-      if(!canOpen(d.day)){
-        toast(`Locked. Pass Day ${state.unlockedUntil} first.`);
-        return;
-      }
-      selectDay(d.day);
-    };
-
+    item.dataset.day = d.day;
     const meta = document.createElement("div");
     meta.className = "meta";
     const b = document.createElement("b");
@@ -2389,8 +2382,25 @@ function renderPromptLabTab(){
       e.stopPropagation();
       state.promptLab = state.promptLab.filter(x=>x !== p);
       saveState();
-      renderAll();
-      toast("Deleted.");
+      renderAll();// ===== MOBILE SAFE DAY TAP HANDLER =====
+const listEl = $("list");
+
+["click", "touchstart"].forEach(evt => {
+  listEl.addEventListener(evt, (e) => {
+    const item = e.target.closest(".item");
+    if (!item) return;
+
+    const day = Number(item.dataset.day);
+    if (!day) return;
+
+    if (!canOpen(day)) {
+      toast(`Locked. Pass Day ${state.unlockedUntil} first.`);
+      return;
+    }
+
+    selectDay(day);
+  }, { passive: false });
+});      toast("Deleted.");
     };
 
     div.appendChild(meta);
