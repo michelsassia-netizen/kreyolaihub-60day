@@ -329,8 +329,22 @@
     }
     body.cyber .toast{ background: rgba(16,26,48,.92); }
     .toast.show{ display:block; }
-  </style>
-</head>
+  </style><style>
+/* --- MOBILE TAP FIX (emergency) --- */
+html, body { pointer-events: auto !important; }
+* { -webkit-tap-highlight-color: transparent; }
+a, button, input, textarea, select { pointer-events: auto !important; }
+
+/* common fullscreen blockers */
+.overlay, .backdrop, .glass, .bg, .background, .loader, .loading, .modal-backdrop {
+  pointer-events: none !important;
+}
+
+/* if you have a fixed background layer, it must NOT catch taps */
+#bg, #background, .hero-bg, .full-bg {
+  pointer-events: none !important;
+}
+</style></head>
 
 <body>
 <div class="wrap">
