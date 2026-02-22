@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="theme-color" content="#0D1222" />
+<link rel="manifest" href="manifest.json">
+<title>KreyòlAIHub — 60 Day Mastery</title>
+
+<style>
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto;
+  background:#0D1222;
+  color:#EAF0FF;
+}
+.container{
+  max-width:900px;
+  margin:auto;
+  padding:20px;
+}
+.card{
+  background:#101A30;
+  padding:20px;
+  border-radius:16px;
+  margin-bottom:20px;
+}
+button{
+  padding:12px 16px;
+  border:none;
+  border-radius:12px;
+  background:#39D2FF;
+  color:#000;
+  font-weight:700;
+  cursor:pointer;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+button:active{
+  transform:scale(.98);
+}
+.list-item{
+  padding:12px;
+  background:#182544;
+  border-radius:12px;
+  margin-bottom:8px;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<h1>🚀 KreyòlAIHub 60-Day System</h1>
+
+<div class="card">
+  <h3>Lessons</h3>
+  <div id="list"></div>
+</div>
+
+<div class="card">
+  <h3 id="lessonTitle">Select a lesson</h3>
+  <div id="lessonContent"></div>
+</div>
+
+</div>
+
+<script>
+
+// REGISTER SW
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js");
+  });
+}
+
+// SAMPLE LESSONS
+const LESSONS = {
+  1: "Day 1: AI Basics — AI predicts patterns, not truth.",
+  2: "Day 2: Context Window — AI memory is limited.",
+  3: "Day 3: Prompt Framework — Role, Task, Context, Constraints.",
+  4: "Day 4: JSON Outputs — Structured data for automation.",
+  5: "Day 5: AI Safety — Never paste client data."
+};
+
+const list = document.getElementById("list");
+const lessonTitle = document.getElementById("lessonTitle");
+const lessonContent = document.getElementById("lessonContent");
+
+// RENDER LIST
+Object.keys(LESSONS).forEach(day=>{
+  const div = document.createElement("div");
+  div.className="list-item";
+  div.dataset.day=day;
+  div.textContent="Day "+day;
+  list.appendChild(div);
+});
+
+// MOBILE SAFE EVENT DELEGATION
+["click","touchstart"].forEach(evt=>{
+  list.addEventListener(evt,(e)=>{
+    const item = e.target.closest(".list-item");
+    if(!item) return;
+    const day = item.dataset.day;
+    lessonTitle.textContent="Day "+day;
+    lessonContent.textContent=LESSONS[day];
+    e.preventDefault();
+  },{passive:false});
+});
+
+</script>
+</body>
+</html>
